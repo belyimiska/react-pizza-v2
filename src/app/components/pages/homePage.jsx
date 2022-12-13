@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Categories from "../categories";
 import PizzaBlock from "../pizzaBlock";
@@ -6,8 +6,12 @@ import Skeleton from "../skeleton";
 import Sort from "../sort";
 import { categories, initialCategory } from "../../api/categories";
 import { initialSortItem, sortList } from "../../api/sorts";
+import Pagination from "../pagination";
+import { SeacrhContext } from "../../App";
 
 const HomePage = () => {
+  const { searchValue } = useContext(SeacrhContext);
+
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategoryId, setActiveCategoryId] = useState(initialCategory.id);
@@ -53,6 +57,19 @@ const HomePage = () => {
     setActiveSortTypeId(id);
   };
 
+  const filterItems = (data) => {
+    const filteredItems = searchValue
+      ? data.filter((item) =>
+          item.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      : data;
+    return filteredItems;
+  };
+
+  const filteredItems = pizzas.length > 0 ? filterItems(pizzas) : pizzas;
+
+  console.log(filteredItems);
+
   return (
     <div className="container">
       <div className="content__top">
@@ -71,8 +88,9 @@ const HomePage = () => {
       <div className="content__items">
         {isLoading
           ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((item) => <PizzaBlock key={item.id} {...item} />)}
+          : filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
+      <Pagination />
     </div>
   );
 };

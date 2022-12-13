@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SearchBlock from "./searchBlock";
 
 const Header = () => {
   return (
@@ -14,6 +15,7 @@ const Header = () => {
             </div>
           </div>
         </Link>
+        <SearchBlock />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>520 ₽</span>
