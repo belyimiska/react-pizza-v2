@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Header from "./components/header";
+import Header from "./components/ui/header";
 import Cart from "./components/pages/cart";
 import HomePage from "./components/pages/homePage";
 import NotFound from "./components/pages/notFound";

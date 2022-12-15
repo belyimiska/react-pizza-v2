@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { SeacrhContext } from "../../App";
 
 import styles from "./searchBlock.module.scss";
@@ -7,9 +7,17 @@ const SearchBlock = () => {
   const { searchValue, handleSearchQuery, handleSearchClear } =
     useContext(SeacrhContext);
 
+  const inputRef = useRef();
+
+  const handleInputClear = () => {
+    handleSearchClear();
+    inputRef.current.focus();
+  };
+
   return (
     <div className={styles.root}>
       <input
+        ref={inputRef}
         value={searchValue}
         onChange={handleSearchQuery}
         className={styles.input}
@@ -17,7 +25,7 @@ const SearchBlock = () => {
       />
       {searchValue && (
         <svg
-          onClick={handleSearchClear}
+          onClick={handleInputClear}
           className={styles.clearIcon}
           width="40"
           height="40"

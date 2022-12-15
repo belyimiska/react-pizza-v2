@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Sort = ({ items, activeValue, onSortItemSelect }) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
+
+  const sortRef = useRef();
+
+  useEffect(() => {
+    const handleClickBody = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setIsPopupOpened(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClickBody);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickBody);
+    };
+  }, []);
 
   const handleOpenPopup = () => {
     setIsPopupOpened(!isPopupOpened);
@@ -18,7 +34,7 @@ const Sort = ({ items, activeValue, onSortItemSelect }) => {
   };
 
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"

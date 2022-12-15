@@ -1,21 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import Categories from "../categories";
-import PizzaBlock from "../pizzaBlock";
-import Skeleton from "../skeleton";
-import Sort from "../sort";
-import { categories, initialCategory } from "../../api/categories";
-import { initialSortItem, sortList } from "../../api/sorts";
-import Pagination from "../pagination";
+import { useDispatch, useSelector } from "react-redux";
 import { SeacrhContext } from "../../App";
+import axios from "axios";
+import Categories from "../ui/categories";
+import PizzaBlock from "../ui/pizzaBlock";
+import Skeleton from "../ui/skeleton";
+import Sort from "../ui/sort";
+import { categories } from "../../api/categories";
+import { sortList } from "../../api/sorts";
+import Pagination from "../pagination";
+import {
+  getCategoryId,
+  getSortItemId,
+  setCategory,
+  setSortItem,
+} from "../../redux/filterSlice";
 
 const HomePage = () => {
   const { searchValue } = useContext(SeacrhContext);
+  const dispatch = useDispatch();
+
+  const activeCategoryId = useSelector(getCategoryId());
+  const activeSortTypeId = useSelector(getSortItemId());
 
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeCategoryId, setActiveCategoryId] = useState(initialCategory.id);
-  const [activeSortTypeId, setActiveSortTypeId] = useState(initialSortItem.id);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,7 +50,7 @@ const HomePage = () => {
       }
     }
     fetchData();
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }, [activeCategoryId, activeSortTypeId]);
 
   const getSortProperty = (id) => {
@@ -50,11 +59,11 @@ const HomePage = () => {
   };
 
   const handleCategorySelect = (id) => {
-    setActiveCategoryId(id);
+    dispatch(setCategory(id));
   };
 
   const handleSortItemSelect = (id) => {
-    setActiveSortTypeId(id);
+    dispatch(setSortItem(id));
   };
 
   const filterItems = (data) => {
@@ -67,8 +76,6 @@ const HomePage = () => {
   };
 
   const filteredItems = pizzas.length > 0 ? filterItems(pizzas) : pizzas;
-
-  console.log(filteredItems);
 
   return (
     <div className="container">
@@ -86,9 +93,13 @@ const HomePage = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {isLoading
-          ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
-          : filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)}
+        {isLoading ? (
+          [...new Array(8)].map((_, index) => <Skeleton key={index} />)
+        ) : filteredItems.length === 0 ? (
+          <h3>Ничего не найдено</h3>
+        ) : (
+          filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)
+        )}
       </div>
       <Pagination />
     </div>
