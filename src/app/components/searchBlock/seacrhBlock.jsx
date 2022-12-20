@@ -1,16 +1,25 @@
-import React, { useContext, useRef } from "react";
-import { SeacrhContext } from "../../App";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearSearchValue,
+  getSearchValue,
+  setSearchValue,
+} from "../../redux/filterSlice";
 
 import styles from "./searchBlock.module.scss";
 
 const SearchBlock = () => {
-  const { searchValue, handleSearchQuery, handleSearchClear } =
-    useContext(SeacrhContext);
+  const dispatch = useDispatch();
+  const searchValue = useSelector(getSearchValue());
 
   const inputRef = useRef();
 
+  const handleSearchQuery = ({ target }) => {
+    dispatch(setSearchValue(target.value));
+  };
+
   const handleInputClear = () => {
-    handleSearchClear();
+    dispatch(clearSearchValue());
     inputRef.current.focus();
   };
 
