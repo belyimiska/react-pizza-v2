@@ -6,7 +6,25 @@ import {
   removeProduct,
 } from "../../redux/cartSlice";
 
-const CartItem = ({ imageUrl, title, size, count, type, price, id }) => {
+type CartItemProps = {
+  imageUrl: string;
+  title: string;
+  size: number;
+  count: number;
+  type: string;
+  price: number;
+  id: string;
+};
+
+const CartItem: React.FC<CartItemProps> = ({
+  imageUrl,
+  title,
+  size,
+  count,
+  type,
+  price,
+  id,
+}) => {
   const dispatch = useDispatch();
 
   const handleIncreaseItemCount = () => {

@@ -20,7 +20,7 @@ import {
   getPizzas,
 } from "../../redux/pizzasSlice";
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   const dispatch = useDispatch();
 
   const searchValue = useSelector(getSearchValue());
@@ -33,31 +33,34 @@ const HomePage = () => {
     const currentCategory =
       Number(activeCategoryId) > 0 ? `category=${activeCategoryId}` : "";
 
-    const currentOrder = getSortProperty(activeSortTypeId).includes("-")
+    const currentOrder = getSortProperty(activeSortTypeId)?.includes("-")
       ? "asc"
       : "desc";
 
-    const currentSort = getSortProperty(activeSortTypeId).replace("-", "");
+    const currentSort = getSortProperty(activeSortTypeId)?.replace("-", "");
 
-    dispatch(fetchPizzas({ currentCategory, currentSort, currentOrder }));
+    dispatch(
+      //@ts-ignore
+      fetchPizzas({ currentCategory, currentSort, currentOrder })
+    );
   }, [activeCategoryId, activeSortTypeId]);
 
-  const getSortProperty = (id) => {
+  const getSortProperty = (id: string) => {
     const currentSort = sortList.find((item) => item.id === id);
-    return currentSort.sortProperty;
+    return currentSort?.sortProperty;
   };
 
-  const handleCategorySelect = (id) => {
+  const handleCategorySelect = (id: string) => {
     dispatch(setCategory(id));
   };
 
-  const handleSortItemSelect = (id) => {
+  const handleSortItemSelect = (id: string) => {
     dispatch(setSortItem(id));
   };
 
-  const filterItems = (data) => {
+  const filterItems = (data: any) => {
     const filteredItems = searchValue
-      ? data.filter((item) =>
+      ? data.filter((item: any) =>
           item.title.toLowerCase().includes(searchValue.toLowerCase())
         )
       : data;
@@ -87,7 +90,9 @@ const HomePage = () => {
         ) : filteredItems.length === 0 ? (
           <h3>Ничего не найдено</h3>
         ) : (
-          filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)
+          filteredItems.map((item: any) => (
+            <PizzaBlock key={item.id} {...item} />
+          ))
         )}
       </div>
       <Pagination />

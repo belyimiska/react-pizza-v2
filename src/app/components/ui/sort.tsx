@@ -1,12 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Sort = ({ items, activeValue, onSortItemSelect }) => {
+type SortProps = {
+  items: { id: string; title: string }[];
+  activeValue: string;
+  onSortItemSelect: any;
+};
+
+const Sort: React.FC<SortProps> = ({
+  items,
+  activeValue,
+  onSortItemSelect,
+}) => {
   const [isPopupOpened, setIsPopupOpened] = useState(false);
 
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickBody = (event) => {
+    const handleClickBody = (event: any) => {
       if (!event.path.includes(sortRef.current)) {
         setIsPopupOpened(false);
       }
@@ -23,14 +33,14 @@ const Sort = ({ items, activeValue, onSortItemSelect }) => {
     setIsPopupOpened(!isPopupOpened);
   };
 
-  const handlePopupItemSelect = (id) => {
+  const handlePopupItemSelect = (id: string) => {
     onSortItemSelect(id);
     setIsPopupOpened(false);
   };
 
-  const getPopupItemTitle = (id) => {
+  const getPopupItemTitle = (id: string) => {
     const activeItem = items.find((item) => item.id === id);
-    return activeItem.title;
+    return activeItem?.title;
   };
 
   return (

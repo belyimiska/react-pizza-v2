@@ -10,7 +10,7 @@ import {
 import CartEmpty from "../ui/cartEmpty";
 import CartItem from "../ui/cartItem";
 
-const Cart = () => {
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(getCartItems());
   const totalPrice = useSelector(getTotalPrice());
@@ -102,7 +102,7 @@ const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          {cartItems.map((item) => (
+          {cartItems.map((item: any) => (
             <CartItem key={item.id} {...item} />
           ))}
         </div>

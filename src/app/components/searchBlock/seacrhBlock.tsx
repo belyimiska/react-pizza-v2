@@ -8,19 +8,19 @@ import {
 
 import styles from "./searchBlock.module.scss";
 
-const SearchBlock = () => {
+const SearchBlock: React.FC = () => {
   const dispatch = useDispatch();
   const searchValue = useSelector(getSearchValue());
 
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSearchQuery = ({ target }) => {
+  const handleSearchQuery = ({ target }: any) => {
     dispatch(setSearchValue(target.value));
   };
 
   const handleInputClear = () => {
     dispatch(clearSearchValue());
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   return (

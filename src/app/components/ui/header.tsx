@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { getCartItemsCount, getTotalPrice } from "../../redux/cartSlice";
 import SearchBlock from "../searchBlock";
 
-const Header = () => {
+const Header: React.FC = () => {
   const totalPrice = useSelector(getTotalPrice());
   const itemsCount = useSelector(getCartItemsCount());
 

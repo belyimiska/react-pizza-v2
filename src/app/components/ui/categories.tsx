@@ -1,6 +1,16 @@
 import React from "react";
 
-const Categories = ({ items, activeValue, onCategorySelect }) => {
+type CategoriesProps = {
+  items: { id: string; title: string }[];
+  activeValue: string;
+  onCategorySelect: any;
+};
+
+const Categories: React.FC<CategoriesProps> = ({
+  items,
+  activeValue,
+  onCategorySelect,
+}) => {
   return (
     <div className="categories">
       <ul>
