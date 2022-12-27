@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Categories from "../ui/categories";
 import PizzaBlock from "../ui/pizzaBlock";
 import Skeleton from "../ui/skeleton";
@@ -18,10 +18,12 @@ import {
   fetchPizzas,
   getPizzasLoadingStatus,
   getPizzas,
+  EStatus,
 } from "../../redux/pizzasSlice";
+import { useAppDispatch } from "../../redux/store";
 
 const HomePage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const searchValue = useSelector(getSearchValue());
   const pizzas = useSelector(getPizzas());
@@ -33,30 +35,30 @@ const HomePage: React.FC = () => {
     const currentCategory =
       Number(activeCategoryId) > 0 ? `category=${activeCategoryId}` : "";
 
-    const currentOrder = getSortProperty(activeSortTypeId)?.includes("-")
+    const currentOrder = getSortProperty(activeSortTypeId).includes("-")
       ? "asc"
       : "desc";
 
-    const currentSort = getSortProperty(activeSortTypeId)?.replace("-", "");
+    const currentSort = getSortProperty(activeSortTypeId).replace("-", "");
 
-    dispatch(
-      //@ts-ignore
-      fetchPizzas({ currentCategory, currentSort, currentOrder })
-    );
+    dispatch(fetchPizzas({ currentCategory, currentSort, currentOrder }));
   }, [activeCategoryId, activeSortTypeId]);
 
   const getSortProperty = (id: string) => {
     const currentSort = sortList.find((item) => item.id === id);
-    return currentSort?.sortProperty;
+    if (currentSort) {
+      return currentSort.sortProperty;
+    }
+    return "rating";
   };
 
-  const handleCategorySelect = (id: string) => {
+  const handleCategorySelect = useCallback((id: string) => {
     dispatch(setCategory(id));
-  };
+  }, []);
 
-  const handleSortItemSelect = (id: string) => {
+  const handleSortItemSelect = useCallback((id: string) => {
     dispatch(setSortItem(id));
-  };
+  }, []);
 
   const filterItems = (data: any) => {
     const filteredItems = searchValue
@@ -85,7 +87,7 @@ const HomePage: React.FC = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {loadingStatus === "loading" ? (
+        {loadingStatus === EStatus.LOADING ? (
           [...new Array(8)].map((_, index) => <Skeleton key={index} />)
         ) : filteredItems.length === 0 ? (
           <h3>Ничего не найдено</h3>

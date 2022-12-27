@@ -7,3 +7,5 @@ export const sortList = [
 export const initialSortItem = sortList.find(
   (item) => item.title === "популярности"
 );
+
+export const initSortItemId = initialSortItem ? initialSortItem.id : "";

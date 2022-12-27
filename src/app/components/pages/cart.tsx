@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   clearCart,
@@ -7,11 +7,12 @@ import {
   getCartItemsCount,
   getTotalPrice,
 } from "../../redux/cartSlice";
+import { useAppDispatch } from "../../redux/store";
 import CartEmpty from "../ui/cartEmpty";
 import CartItem from "../ui/cartItem";
 
 const Cart: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const cartItems = useSelector(getCartItems());
   const totalPrice = useSelector(getTotalPrice());
   const itemsCount = useSelector(getCartItemsCount());

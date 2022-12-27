@@ -8,3 +8,5 @@ export const categories = [
 ];
 
 export const initialCategory = categories.find((item) => item.title === "Все");
+
+export const initCategoryId = initialCategory ? initialCategory.id : "";

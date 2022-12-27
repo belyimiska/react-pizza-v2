@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProductToCart, getProductCount } from "../../redux/cartSlice";
+import {
+  addProductToCart,
+  getProductCount,
+  TCartItem,
+} from "../../redux/cartSlice";
+import { useAppDispatch } from "../../redux/store";
 
 type PizzaBlockProps = {
   imageUrl: string;
@@ -22,7 +27,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
   types,
   id,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
@@ -38,7 +43,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
   };
 
   const handleAddToCart = () => {
-    const cartItem = {
+    const cartItem: TCartItem = {
       id,
       title,
       price,
