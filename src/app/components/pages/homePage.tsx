@@ -6,7 +6,7 @@ import Skeleton from "../ui/skeleton";
 import Sort from "../ui/sort";
 import { categories } from "../../api/categories";
 import { sortList } from "../../api/sorts";
-import Pagination from "../pagination";
+
 import {
   getCategoryId,
   getSearchValue,
@@ -97,7 +97,6 @@ const HomePage: React.FC = () => {
           ))
         )}
       </div>
-      <Pagination />
     </div>
   );
 };
